@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Zerotize Pay</title>
+</head>
+<body>
+
+  <h2>SPCK Payment Test</h2>
+
+  <input id="name" type="text" placeholder="Your Name"><br><br>
+  <input id="phone" type="text" placeholder="Phone"><br><br>
+  <input id="email" type="text" placeholder="Email"><br><br>
+
+  <button onclick="pay()">Pay ₹5</button>
+
+  <script>
+    async function pay() {
+      const pid = "PAY_" + Math.floor(Math.random() * 999999);
+
+      const response = await fetch("https://zerotize-backend.onrender.com/pay", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          payment_id: pid,
+          amount: 5,
+          name: document.getElementById("name").value,
+          phone: document.getElementById("phone").value,
+          email: document.getElementById("email").value
+        })
+      });
+
+      const data = await response.json();
+
+      if (data.payment_url) {
+        window.location.href = data.payment_url; // Redirect to QR Page
+      } else {
+        alert("Payment Error");
+      }
+    }
+  </script>
+
+</body>
+</html>
