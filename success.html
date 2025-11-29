@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Payment Result</title>
+</head>
+<body>
+
+  <h2>Checking payment...</h2>
+
+  <script>
+    async function check() {
+      const url = new URLSearchParams(window.location.search);
+      const pid = url.get("payment_id");
+
+      const res = await fetch(`https://zerotize-backend.onrender.com/status/${pid}`);
+      const data = await res.json();
+
+      if (data.status === "success") {
+        document.body.innerHTML = `
+          <h1>Payment Successful 🎉</h1>
+          <p>Amount: ₹${data.amount}</p>
+        `;
+      } else {
+        document.body.innerHTML = `
+          <h1>Payment Failed ❌</h1>
+        `;
+      }
+    }
+
+    check();
+  </script>
+
+</body>
+</html>
